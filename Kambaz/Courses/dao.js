@@ -5,23 +5,23 @@ export function findAllCourses() {
     return model.find();
 }
 
-export function findCoursesForEnrolledUser(userId) {
-    return model.aggregate([
-        {
-            $lookup: {
-                from: "enrollments",
-                localField: "_id",
-                foreignField: "course",
-                as: "enrollments"
-            }
-        },
-        {
-            $match: {
-                "enrollments.user": userId
-            }
-        }
-    ]);
-}
+// export function findCoursesForEnrolledUser(userId) {
+//     return model.aggregate([
+//         {
+//             $lookup: {
+//                 from: "enrollments",
+//                 localField: "_id",
+//                 foreignField: "course",
+//                 as: "enrollments"
+//             }
+//         },
+//         {
+//             $match: {
+//                 "enrollments.user": userId
+//             }
+//         }
+//     ]);
+// }
 
 export function createCourse(course) {
     const newCourse = { ...course, _id: uuidv4() };
@@ -34,4 +34,8 @@ export function deleteCourse(courseId) {
 
 export function updateCourse(courseId, courseUpdates) {
     return model.updateOne({ _id: courseId }, { $set: courseUpdates });
+}
+
+export function findUsersForCourse(cid) {
+    return model.find({ course: cid }).populate("user");
 }
