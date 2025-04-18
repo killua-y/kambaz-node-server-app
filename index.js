@@ -22,7 +22,9 @@ const app = express()
 app.use(
     cors({
         credentials: true,
-        origin: process.env.NETLIFY_URL,
+        origin: process.env.NODE_ENV === "development" 
+            ? "http://localhost:5173" 
+            : process.env.NETLIFY_URL,
     })
 );
 const sessionOptions = {
